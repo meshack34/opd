@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+
+<!--This for payment receipt print function-->
+<div id="hello">
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td><img src="https://bharathbrands.in/images/BHARATHBRANDS-01.png" alt="logo Image" width="180px"></td>
+					<td>
+						<div class="" >
+							<h2 style="margin: 0 0 10px;">BHARATHBRANDS PRIVATE LIMITED</h2>
+							<P>GHANA HEALTH SERVICE,P.O. BOX-23, PEKI V/R</P>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Estimate Bill</h3></td>
+				</tr>
+
+				<tr>
+					<th>Reg. No.</th>
+					<td>:{{id}}</td>
+					<th>Patient Name</th>
+					<td>:{{name}}</td>
+				</tr>
+				<tr>
+					<th>Age/Sex</th>
+					<td>:{{age}}Y/{{gender}}</td>
+					<th>Mobile</th>
+					<td>:{{contact_no}}</td>
+				</tr>
+				<tr>
+
+<!--					<th>Visit No.</th>-->
+<!--					<td>:{{pay_m_visit_id}}</td>-->
+<!--				</tr>-->
+<!--				<tr>-->
+<!--					<th>Address</th>-->
+<!--					<td>:{{address}}</td>-->
+<!--					<th>Visit Time</th>-->
+<!--					<td>:{{visit_date_time}}</td>-->
+<!--				</tr>-->
+			</table>
+		</td>
+	</tr>
+	{% if datas %}
+<!--	FOR INDIVISUAL SERVICES -->
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">S. No</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Service</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Rate</th>
+				</tr>
+				<tr>
+			{% for data in datas %}
+				<tr>
+                  <td>{{forloop.counter}}</td>
+				<td><b>{{data.services}}</b></td>
+                  <td><b>{{data.services_rate}}</b></td>
+
+              </tr>
+				{% endfor %}
+				{% if package_records %}
+				<tr>
+					<td></td>
+					<td><b>Package Details</b></td>
+				</tr>
+				{% for data in package_records %}
+				<tr>
+                  <td></td>
+                  <td>{{data.service_name}}</td>
+<!--                  <td>{{data.rate}}</td>-->
+              </tr>
+				{% endfor %}
+				{% endif %}
+				{% if profile_records %}
+				<tr>
+					<td></td>
+					<td><b>Profile Details</b></td>
+				</tr>
+				{% for data in profile_records %}
+				<tr>
+                  <td></td>
+                  <td>{{data.service_name}}</td>
+<!--                  <td>{{data.rate}}</td>-->
+              </tr>
+				{% endfor %}
+				{% endif %}
+				<hr>
+				<tr style="background-color:#eee;color:grey!important;">
+					<td></td>
+                  <td>Total Amount</td>
+					<td><b>{{total}}</b></td>
+              </tr>
+<!--				<tr style="background-color:#eee;color:grey!important;">-->
+<!--                  <td>Net Payable Amount</td>-->
+<!--                  <td></td>-->
+<!--					<td>{{total}}</td>-->
+<!--              </tr>-->
+<!--					<tr style="background-color:#eee;color:grey!important;">-->
+<!--                  <td>Total Paid Amount</td>-->
+<!--                  <td></td>-->
+<!--					<td style="background-color:#eee;color:black!important;">{{total}}</td>-->
+<!--              </tr>-->
+			</table>
+		</td>
+	</tr>
+	{% endif %}
+</table>
+</div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% block head_block %}
+
+{% endblock %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <!-- Main Dashboard -->
+        <div class="container">
+            <div class="row">
+                <div class="col-20 w-100">
+                        <div class="container-fluid dashboard-content ">
+                            <div class="ecommerce-widget">
+                                <input type="hidden" name="screen_id" value="SCR0036">
+                                <input type="hidden" name="message_id" value="MSG0036">
+                                <div class="box-outer">
+                                    <div class="box text-center card">
+                                        <a href="/token_master_configuration">
+                                        <div class="card_icon" style="height: 75;">
+                                            <img src="{% static 'assets/images/interface/dashboard/iocn-3.png' %}"
+                                            alt="" />
+                                        </div>
+                                        <div class="card-body">
+                                          <h5 class="text-muted">Token Configuration</h5>
+                                        </div>
+                                      </a>
+                                      </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="box text-center card">
+                                        <a href="/token_creation">
+                                            <div class="card_icon">
+                                                <img src="{% static 'assets/images/interface/dashboard/iocn-2.png' %}"
+                                                    alt="" />
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="text-muted">Token Creations</h5>
+                                            </div>
+                                        </a>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="box text-center card">
+                                        <a href="/token_slip_generations">
+                                            <div class="card_icon">
+                                                <img src="{% static 'assets/images/interface/dashboard/iocn-7.png' %}"
+                                                    alt="" />
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="text-muted">Token Slip Generations</h5>
+                                            </div>
+                                        </a>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="box text-center card">
+                                    <a href="/opd_reception_view">
+                                        <div class="card_icon">
+                                            <img src="{% static 'assets/images/interface/dashboard/iocn-2.png' %}"
+                                                alt="" />
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="text-muted">Token Admin View</h5>
+                                        </div>
+                                    </a>
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="box text-center card">
+                                    <a href="/centralised_admin_view">
+                                        <div class="card_icon">
+                                            <img src="{% static 'assets/images/interface/dashboard/iocn-7.png' %}"
+                                                alt="" />
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="text-muted">Centralised View</h5>
+                                        </div>
+                                    </a>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                        
+                        <!--/ Latest Patients-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+
+  #id_from_date,
+  #id_to_date,
+  #id_Store,
+  #id_MRP,
+  #id_Expiry_Date,
+  #id_Pysical_Qty,
+  #id_GST,
+  #id_CGST,
+  #id_SGST,
+  #id_IGST,
+  #id_Remark {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="color: white;" href="#">Stock Entry</a>
+      </div>
+    </nav><br>
+    <form method="post">
+
+      <div class="container-fluid">
+
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+          <div class="card">
+            <div class="body">
+              <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i
+                    class="fas fa-plus">Add</i></button>&nbsp;
+                <button type="button" class="btn btn-info"><a href="#"><i class="fas fa-edit"
+                      style="color:white;">Edit</i></a></button>&nbsp;
+
+                <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                    class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+              </div>
+              <br>
+
+
+
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                {% csrf_token %}
+                <div class="form-row pb-3">
+                  <div class="form-group col-md-2 mb-0">
+                    <label><b>PO ID</b></label>
+                    <input type="text" name="po_no" class="form-control" required>
+                  </div>
+                  <div class=" col-md-1"><br>
+                    <button type="submit" name="search_po" value="search_po" class="btn btn-warning w-100 mt-2"><i
+                        class="fa fa-search pr-2"></i>Search</button>
+                  </div>
+                  <div class=" col-md-1"><br>
+                    <a href='/Without_PO' class="btn btn-primary w-100 mt-2"> <i class="fa fa-hand-pointer"
+                        aria-hidden="true">&nbsp;Without-PO</i></a>&nbsp;
+                  </div>
+                </div>
+
+    </form>
+
+  </div><br>
+  <br>
+  </form>
+</div>
+<div class="table-responsive ">
+  <table class="datatable table table-stripped">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>PO No.</th>
+        <th>Date Time</th>
+        <th>Location Name</th>
+        <th>Vendor Name</th>
+        <th>Department Name</th>
+        <th>Net Amount</th>
+        <th>Basic Amount</th>
+        <th>View</th>
+
+      </tr>
+    </thead>
+    {% for data1,data2 in stock_entry%}
+    <tbody>
+
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td><b>{{data1.PO_id}}</b></td>
+        <td>{{data1.PO_datetime}}</td>
+        <td>{{data1.po_location}}</td>
+        <td>{{data1.vendar_id.vendor_name}}</td>
+        <td>{{data1.Department}}</td>
+        <td>{{data1.net_amount}}</td>
+        <td>{{data1.basic_amt}}</td>
+        <td><a class="btn btn-primary" href="/search_single_PO/{{data1.PO_id}}"><i class="fa fa-hand-pointer"
+              aria-hidden="true"></i></a>
+        </td>
+      </tr>
+
+    </tbody>
+    {% endfor %}
+
+  </table>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+            <form method="POST" id="VisitForm">
+                                      {% csrf_token %}
+                                    <div class="alert-primary patient-visit mb-3">
+                                      <div class="row no-gutters">
+                                           <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Title:</label>
+                                            {{form.title}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                               <label>First Name:</label>
+                                            {{form.first_name}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group ">
+                                              <label>Middle Name:</label>
+                                            {{form.middle_name}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>last Name:</label>
+                                            {{form.last_name}}
+                                          </div>
+                                        </div>
+                                        <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>D.O.B:</label>
+                                            {{form.dob}}
+                                          </div>
+                                        </div>
+                                          <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Gender:</label>
+                                            {{form.gender}}
+                                          </div>
+                                        </div>
+                                          <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Father OR Husband Name:</label>
+                                            {{form.father_or_husband_name}}
+                                          </div>
+                                        </div>
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Mother Name:</label>
+                                            {{form.mother_name}}
+                                          </div>
+                                        </div>
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Mob No.:</label>
+                                            {{form.mobile_number}}
+                                          </div>
+                                        </div>
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Address: </label>
+                                            {{form.address}}
+                                          </div>
+                                        </div>
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Email ID:</label>
+                                            {{form.email}}
+                                          </div>
+                                        </div>
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Avail Insured Amt:</label>
+                                            {{form.sum_insured_amount}}
+                                          </div>
+                                        </div>
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>City:</label>
+                                            {{form.city}}
+                                          </div>
+                                        </div>
+                                          <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Pin Code:</label>
+                                            {{form.pin_code}}
+                                          </div>
+                                        </div>
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Valid Update</label>
+                                            {{form.valid_upto}}
+                                          </div>
+                                        </div>
+
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Emergency Cont Person.:</label>
+                                            {{form.emergency_contact_person}}
+                                          </div>
+                                        </div>
+
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Emergengy Cont No.: </label>
+                                            {{form.emergency_contact_num}}
+                                          </div>
+                                        </div>
+
+                                         <div class="col-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                              <label>Alt Cont No.:</label>
+                                            {{form.alternate_contact_number}}
+                                          </div>
+                                        </div>
+
+
+                                      </div><!-- row -->
+                                         &nbsp;&nbsp;<input type="submit" name="update" value="Update" class="btn btn-primary"><br>
+                                        <br><br>
+                                    </div>
+                                    </form>
+<!--  <form  method="POST">-->
+<!--    {% csrf_token %}-->
+<!--    {{form}}-->
+<!--   -->
+<!--  </form>-->
+      </div>
+      </div>
+{% endblock  %}

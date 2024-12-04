@@ -1,0 +1,138 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Main Dashboard -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="box-outer">
+            <div id="Patient_R" class="h-100" style="width: 100%;">
+              <div class="patient-registration">
+                <div class="top-heading lightgreen_bg">
+                  <h3 class="section_title"> Patient Search</h3>
+                </div>
+                <div class="container-fluid">
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-3 pl-2 pr-2">
+                        <div class="form-group row no-gutters">
+                          <label for="reg-no" class="col-sm-4 col-form-label">UHID</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" id="reg-no" placeholder="" name="uhid">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 pl-2 pr-2">
+                        <div class="form-group row no-gutters">
+                          <label for="patient-name" class="col-sm-5 col-form-label">Patient Name</label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" id="patient-name" placeholder=""
+                              name="patient_name">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 pl-2 pr-2">
+                        <div class="form-group row no-gutters">
+                          <label for="mobile-no" class="col-sm-5 col-form-label">Mobile No.</label>
+                          <div class="col-sm-7">
+                            <input type="number" class="form-control" id="mobile-no" placeholder=""
+                              name="mobile_number">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 mr-0 ml-auto pl-2 pr-2">
+                        <div class="form-group butns text-right">
+                          <button type="submit" class="bg-primary border-0 p-2 text-white" name="button"><i
+                              class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                          <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><i
+                              class="fas fa-paint-brush"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <a href="{% url 'final_bill' %}"><button class="btn btn-info" style="float:right;">final bill</button></a>
+                    </div>
+                  </div>
+                  {% if success_search %}
+                  <hr>
+                  <h5>Already Registerd</h5>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="register_record">
+                        <table class="datatable table table-stripped ">
+                          <thead>
+                          <tr style="background:#d1dae6;">
+                            <th>UHID</th>
+                            <th>Patient Name</th>
+                            <th>Age/Gender</th>
+                            <th>Date Of Birth</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in records %}
+                          <tr>
+                            <td><a href="/opd_billing_search/{{data.uhid}}">{{data.uhid}}</a></td>
+                            <td>{{data.title}}.{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}
+                            </td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.dob}}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  {% else %}
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="register_record">
+                        <table class="datatable table table-stripped ">
+                          <thead>
+                          <tr style="background:#d1dae6;">
+                            <th>S N.No</th>
+                            <th>UHID</th>
+                            <th>Patient Name</th>
+                            <th>Age/Gender</th>
+                            <th>Date Of Birth</th>
+                          </tr>
+                          
+                        </thead>
+                        <tbody>
+                          {% for data in records1 %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="/opd_billing_search/{{data.uhid}}">{{data.uhid}}</a></td>
+                            <td>{{data.title}}.{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}
+                            </td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.dob}}</td>
+                          </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

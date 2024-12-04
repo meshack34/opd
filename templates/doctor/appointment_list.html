@@ -1,0 +1,79 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% block body_block %}
+   <!-- content -->
+   <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+    <h6 class="card-title text-bold"> Appointment List</h6>
+    <div class="form-row">
+
+        <a href="doctor_appointment">
+            <button type="button" class="btn btn-info" style="float: center;" data-toggle="modal" data-target="#myModal" >Appointment </button>
+        </a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="index">
+                <button type="button" class="btn btn-danger" style="float: right;padding: left 100px; ;" data-toggle="modal" data-target="#myModal"  >Logout </button>
+        </a><br><br>
+
+    </div>
+        <div class="card">
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr><th>Appointment Number</th>
+                                <th>Date </th>
+                                <th>Time Slots</th>
+                                <th>Doctor ID</th>
+                                <th>Name</th>
+                                <th>Patient Id</th>
+                                <th>Patient Name</th>
+                                <th>Service Type</th>
+                                <th>Attachments</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1/01/2021</td>
+                                <td>6.00 - 6.10 PM</td>
+                                <td>77</td>
+                                <td>aaa</td>
+                                <td>001</td>
+                                <td>xxx</td>
+                                <td>nil</td>
+                                <td>nil</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>17/01/2021</td>
+                                <td>6.35 - 6.40 PM</td>
+                                <td>177</td>
+                                <td>baaa</td>
+                                <td>101</td>
+                                <td>yyxxx</td>
+                                <td>nil</td>
+                                <td>nil</td>
+                            </tr>
+                         </tbody>
+
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+
+
+
+{% endblock  %}
+

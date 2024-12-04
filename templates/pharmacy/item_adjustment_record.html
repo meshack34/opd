@@ -1,0 +1,311 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+
+<style>
+  #id_from_date,
+  #id_to_date,
+  #id_sub_store {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="color: white;" href="#">Item Adjustment</a>
+      </div>
+    </nav><br>
+    <form method="post" id="PO_update" data-cities-url="{% url 'Single' %}">
+    <div class="icon-button-demo">&nbsp;
+      &nbsp;&nbsp;<button type="button" class="btn btn-warning" data-toggle="modal"
+        data-target=".bd-example-modal-xl"><i class="fas fa-plus">Add</i></button>&nbsp;
+      <button type="button" class="btn btn-info"><a href="#"><i class="fas fa-edit"
+            style="color:white;">Edit</i></a></button>&nbsp;
+      <button type="submit" class="btn btn-success" name="Save_all" value ="saveall"> <i class="fas fa-save">Save</i></button>&nbsp;
+      <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+          class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+      <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+
+
+    </div>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+          <div class="card">
+            <div class="header">
+              <div class="body">
+                <br>
+                
+                <div id="Item_adjust_update">
+                  {% csrf_token %}
+                  <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+
+                    
+                    <div class="form-row">
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Item Category *</b></label>
+                        <select name='item_cate' id='item_cate' class='form-control' required>
+                          <option value="">select</option>
+                          {% for data in item_category %}
+                          <option value="{{data.id}}">{{data.item_category}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b> Location *</b></label>
+                        <select name="location_id" id="location_id" class="form-control" required>
+                            <option value="">Select</option>
+                            {% for data in location_detail %}
+                            <option value="{{data.id}}">{{data.location_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <label><b> Store *</b></label>
+                        <select name="store_id" id="store_id" class="form-control" required>
+                            <option value="">Select</option>
+                            {% for data in store_names %}
+                            <option value="{{data.id}}">{{data.store_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Item Name</b></label>
+                        <input type="text" name="item_name" list="item" class="form-control">
+                      </div>
+
+                     
+                      <div class=" col-md-2"><br>
+                        <button type="submit" class="btn btn-warning w-50 mt-2" name="search" value="search"><i
+                            class="fa fa-search">Search</i></button>&nbsp;
+                      </div>
+
+
+                      <!-- <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;  -->
+
+
+                    </div>
+                    <br>
+
+                    <datalist id='item'>
+                      {% for data in item_names %}
+                      <option value="{{data.id}}.{{data.item_name}}"></option>
+                      {% endfor %}
+                    </datalist>
+
+                  </div>
+                  <br>
+                  <input type="hidden" id="stores" name="stores" value="{{store_id}}">
+                  <input type="hidden" id="location" name="location" value="{{location_id}}">
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <th>Item Name</th>
+                          <th>Batch No</th>
+                          <th>Expiry Date</th>
+                          <th>Rate</th>
+                          <th>In-Hand Qty</th>
+                          <th>Adjust Qty</th>
+                          <th>Adjustment</th>
+                          <th>Amount</th>
+                          <th>Total Qty</th>
+                          <th>Remarks</th>
+                          <th>Adjust</th>
+                        </tr>
+                      </thead>
+                      
+                      <tbody>
+                        {% if item_list %}
+                        {% for data1 in item_list %}
+                        {% for data in data1 %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td><input type="hidden" name="item_id" id="item_id" value="{{data.item_id_id}}"
+                              class="form-control" readonly>
+                              <input type="text" name="item_id1" id="item_id1" value="{{data.item_id}}"
+                              class="form-control" readonly>
+                          </td>
+                          <td><input type="text" name="batch_no" id="batch_no" value="{{data.batch_no}}"
+                              class="form-control" readonly></td>
+                          <td><input type="text" name="expiry_date" id="expiry_date" value="{{data.expiry_date}}"
+                              class="form-control" readonly></td>
+                          <td><input type="text" name="rate" id="rate" value="{{data.rate}}" class="form-control"
+                              readonly></td>
+                          <td><input type="text" name="available_qty" id="available_qty" value="{{data.available_qty}}"
+                              class="form-control" readonly></td>
+                          <td><input type="text" name="adjust_qty" id="adjust_qty" class="form-control"></td>
+                          <td><div class="row"><div class="col-md-3"><button type="button" style="background-color: cornflowerblue;" class="btn btn-primary" id="plus_item_adjustment">+</button></div>&nbsp;
+                            <div class="col-md-3"><button type="button" style="background-color:lightskyblue" class="btn btn-primary" id="minus_item_adjustment">-</button></div>
+                          </div>
+                          </td>
+                          <td><input type="text" name="amount" id="amount" class="form-control"></td>
+                          <td><input type="text" name="total_qty" id="total_qty" class="form-control"></td>
+                          <td><input type="text" name="remark" id="remark" class="form-control"></td>
+                          <td><button type="button" name="single_submit" id='single_submit' class="btn btn-primary" ><i
+                                class="fa fa-hand-pointer" aria-text="true"></i></button></td>
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                        {% elif item_list1 %}
+                        {% for data1 in item_list1 %}
+                        {% for data in data1 %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td><input type="hidden" name="item_id" id="item_id" value="{{data.item_id_id}}"
+                              class="form-control" readonly>
+                              <input type="text" name="item_id1" id="item_id1" value="{{data.item_id}}"
+                              class="form-control" readonly>
+                          </td>
+                          <td><input type="text" name="batch_no" id="batch_no" value="{{data.serial_batch}}"
+                              class="form-control" readonly></td>
+                          <td><input type="text" name="expiry_date" id="expiry_date" value="{{data.expiry_date}}"
+                              class="form-control" readonly></td>
+                          <td><input type="text" name="rate" id="rate" value="{{data.rate}}" class="form-control"
+                              readonly></td>
+                          <td><input type="text" name="available_qty" id="available_qty" value="{{data.available_qty}}"
+                              class="form-control" readonly></td>
+                          <td><input type="text" name="adjust_qty" id="adjust_qty" class="form-control"></td>
+                          <td><div class="row"><div class="col-md-3"><button type="button" style="background-color: cornflowerblue;" class="btn btn-primary" id="plus_item_adjustment">+</button></div>&nbsp;
+                            <div class="col-md-3"><button type="button" style="background-color:lightskyblue" class="btn btn-primary" id="minus_item_adjustment">-</button></div>
+                          </div>
+                          </td>
+                          <td><input type="text" name="amount" id="amount" class="form-control"></td>
+                          <td><input type="text" name="total_qty" id="total_qty" class="form-control"></td>
+                          <td><input type="text" name="remark" id="remark" class="form-control"></td>
+                          <td><button type="button" name="single_submit" id='single_submit' class="btn btn-primary" ><i
+                                class="fa fa-hand-pointer" aria-text="true"></i></button></td>
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                        {% endif %}
+                       
+                        
+
+                        
+                       
+                      </tbody>
+                      
+                    </table>
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+
+    $(document).on('click', '#single_submit', function () {
+      var dumy = this;
+        var item_id = $(dumy).closest('tr').find('#item_id').val();
+        var batch_no = $(dumy).closest('tr').find('#batch_no').val();
+        var available_qty = $(dumy).closest('tr').find('#available_qty').val();
+        var adjust_qty = $(dumy).closest('tr').find('#adjust_qty').val();
+        var amount = $(dumy).closest('tr').find('#amount').val();
+        var total_qty = $(dumy).closest('tr').find('#total_qty').val();
+        var remark = $(dumy).closest('tr').find('#remark').val();
+        var store = $('#stores').val();
+        var location= $('#location').val();
+        var url=$("#PO_update").attr("data-cities-url");
+ 
+     $.ajax({
+            url: url,
+            data: {
+                'item_id': item_id,
+                'batch_no': batch_no,
+                "available_qty": available_qty,
+                "adjust_qty": adjust_qty,
+                "total_qty": total_qty,
+                "amount": amount,
+                "remark": remark,
+                'location':location,
+                'store':store,
+            },
+            success: function (data) {
+                alert(data);
+            }
+        });
+
+    });
+    
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    
+
+    $(document).on('keyup', '#adjust_qty', function () {
+      var dumy = this;
+      var qty = this.value;
+      var rate = $(dumy).closest('tr').find('#rate').val();
+      var amount = qty * rate;
+      $(dumy).closest('tr').find('#amount').val(amount);
+    });
+
+    $(document).on('click', '#plus_item_adjustment', function () {
+      var dumy = this;
+      var inhand_qty = parseInt($(dumy).closest('tr').find('#available_qty').val());
+      var adjust_qty = parseInt($(dumy).closest('tr').find('#adjust_qty').val());
+
+      var total_qty = (adjust_qty) + (inhand_qty);
+      $(dumy).closest('tr').find('#total_qty').val(total_qty);
+    });
+
+    $(document).on('click', '#minus_item_adjustment', function () {
+      var dumy = this;
+      var inhand_qty = $(dumy).closest('tr').find('#available_qty').val();
+      var adjust_qty = $(dumy).closest('tr').find('#adjust_qty').val();
+      var total_qty = (inhand_qty) - (adjust_qty);
+      $(dumy).closest('tr').find('#total_qty').val(total_qty);
+    });
+
+    $('#item_issue').on('show.bs.modal', function (e) {
+
+      var link = $(e.relatedTarget)
+
+      var item_name = link.data("item_name")
+      var indent_no = link.data("indent_no")
+      var priority = link.data("priority")
+      var item_id = link.data("item_id")
+      var quantity = link.data("quantity")
+      var serial_batch = link.data("serial_batch")
+      var amount = link.data("amount")
+
+      var modal = $(this)
+
+      modal.find(".modal-body #item_name").val(item_name);
+      modal.find(".modal-body #indent_no").val(indent_no);
+      modal.find(".modal-body #priority").val(priority);
+      modal.find(".modal-body #item_id").val(item_id);
+      modal.find(".modal-body #indent_qty").val(quantity);
+      modal.find(".modal-body #serial_batch").val(serial_batch);
+      modal.find(".modal-body #amount").val(amount);
+
+    });
+  });
+</script>
+
+
+
+
+{% endblock %}

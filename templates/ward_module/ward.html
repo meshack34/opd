@@ -1,0 +1,196 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        {% if user %}
+            {% for data in records|slice:":1" %}
+                <h2 style="padding-left: 21px;">{{data.req_ward_cate}} Ward</h2>
+            {% endfor %}
+       {% endif %}
+       {% if admin %}
+        <h2 style="padding-left: 21px;"> Ward</h2>
+       {% endif %}
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                    <div class="card">
+                        <div class="header">
+                            <div class="body">
+
+                                <br>
+                                <div class="icon-button-demo">&nbsp;
+                                    <button type="button" class="btn btn-warning">Investigation</i></button>&nbsp;
+                                    <button type="button" class="btn btn-info"> Consultation </i></button>&nbsp;
+                                    <button type="button" class="btn btn-success"> Medication</i></button>&nbsp;
+                                    <button type="button"  class="btn btn-primary">Procedure </i></button>&nbsp;
+                                    <button type="button"  class="btn" style="background-color: pink;">Bed Transfer </i></button>&nbsp;
+                                    <button type="submit" class="btn btn-danger" form="ward_form" data-toggle="modal" data-target="#bedtransfer">Doctor Transfer </i></button>&nbsp;
+                                    <button type="button" class="btn" style="background-color: rgb(0, 229, 255); color: rgb(53, 44, 44);">Discharge Intimation</i></button>&nbsp;
+                                </div><br>
+                                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                    style="background-color:rgb(233, 233, 233);"><br>
+                                    <form method="POSt" id="ward_form" modelAttribute="hotel">
+                                        {% csrf_token %}
+                                        <div class="row clearfix">
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <label for="UHID_id" style="padding-left: 20px;">UHID</label>
+                                                            <input type="text"  class="form-control" id="UHID_id" name="UHID_id">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <label for="admission_id" style="padding-left: 20px;">Admission Id</label>
+                                                            <input type="text"  class="form-control" id="admission_id" name="admission_id">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <label for="doctory" style="padding-left: 20px;">Primary doctory</label>
+                                                            <input type="text"  class="form-control" id="doctory" name="doctory">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <label for="date_time" style="padding-left: 20px;">Admission Datetime</label>
+                                                            <input type="text"  class="form-control" id="date_time" name="date_time">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="datatable table table-stripped " id="tables">
+
+
+                                        <thead>
+                                            <tr>
+                                                <th>uhid</th>
+                                                <th>admission_ID</th>
+                                                <th>admission_datetime</th>
+                                                <th>admission_type</th>
+                                                <th>req_ward_type</th>
+                                                <th>req_ward_cate</th>
+                                                <th>primary_doctor</th>
+                                                <th>department</th>
+                                                <th>secondary_doctor</th>
+                                                <th>ref_hospital</th>
+                                                <th>bed_no</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in records %}
+                                            <tr>
+                                                <td><a href="/paitent_ward_actions/{{data.uhid}}">{{data.uhid}}</a></td>
+                                                <td>{{data.admission_ID}}</td>
+                                                <td>{{data.admission_datetime}}</td>
+                                                <td>{{data.admission_type}}</td>
+                                                <td>{{data.req_ward_type}}</td>
+                                                <td>{{data.req_ward_cate}}</td>
+                                                <td>{{data.primary_doctor}}</td>
+                                                <td>{{data.department}}</td> 
+                                                <td>{{data.secondary_doctor}}</td> 
+                                                <td>{{data.ref_hospital}}</td> 
+                                                <td>{{data.bed_no}}</td> 
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="bedtransfer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLongTitle">Bed Transfer</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Registration Id</label>
+              <p disabled>
+              {{bed_transfer_from.uhid}}</p>
+            <h3>Transfer From</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label >Ward Type</label>
+                <p>
+                {{bed_transfer_from.from_ward_type}}</p>
+                
+              </div>
+              <div  class="col-md-6">
+                <label>Bed No</label>
+                <p>
+                {{bed_transfer_from.from_bed_no}}</p>
+              </div>
+            </div><br>
+            <h3>Transfer To</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label >Ward Type</label>
+                <p>
+                {{bed_transfer_from.to_ward_type}}</p>
+              </div>
+              <div  class="col-md-6">
+                <label>Bed No</label>
+                <p>
+                {{bed_transfer_from.to_bed_no}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Transfer data & Time</label>
+              <p>
+              {{bed_transfer_from.transfer_datatime}}</p>
+            </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="bed_transfer_button" value="Save">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  <!-- bed transfer end -->
+
+
+
+
+{% endblock %}

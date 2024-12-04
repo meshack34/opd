@@ -1,0 +1,67 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+    input[type='text']{
+        border: none; 
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;">
+            
+            <h2><img src="{% static 'images/result entry.png' %}" alt="" style="width: 50px;">  <b>Result Entry</b></h2><br><br>
+            <div class="icon-button-demo">&nbsp;
+              <button type="sumbit"class="btn btn-success" form='form_id'> <i class="fas fa-save" >Save</i></button>&nbsp;
+              <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+              <button type="button" class="btn btn-danger"><a href='/'><i class="fas fa-times-circle" style="color:white;">Exit</i></a></button>
+          </div><br>
+            <div>
+                <table class="table ">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Range</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">units</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <form method='post' id='form_id'>
+                        {% csrf_token %}
+                        {% for data in entry_records %}
+                        <tr>
+                          <input type="hidden" value="{{data.test_id}}" name="test_id">
+                            <td >{{forloop.counter}}</td>
+                            <td><input type="text" id="id" class='form-comtrol'  value="{{data.service_name}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol'  value="{{data.range}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border-bottom: 10px; background-color: whitesmoke;" value="{{data.value}}" name="value" ></td>
+                            <td><input type="text" id="id" class='form-comtrol'  value="{{data.units}}" readonly></td>
+                          </tr>
+                          {% endfor %}
+                        </form>
+                    </tbody>
+                  </table>
+                  
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Pharmacy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="csrf-token" content="">
+
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon.ico">
+
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
+
+    <!-- Calendar CSS -->
+    <link rel="stylesheet" href="../assets/plugins/fullcalendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="../assets/css/calendar.css">
+
+    <!-- Datatable-->
+    <link rel="stylesheet" href="../assets/css/dataTables.bootstrap4.min.css">
+
+    <!-- Select 2-->
+    <link rel="stylesheet" href="../assets/css/select2.min.css">
+
+    <!-- Datetime Picker-->
+    <link rel="stylesheet" href="../assets/plugins/datetimepicker/css/tempusdominus-bootstrap-4.min.css">
+
+    <!--custom styles-->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <style>
+        #mytable,
+        .po_tr {
+            border-collapse: collapse;
+        }
+    </style>
+    {% extends 'pharmacy/base.html' %}
+    {% load static %}
+    {% load crispy_forms_tags %}
+    {% block body_block %}
+    <!-- content -->
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="main-wrapper" style="padding-top:50px;padding-left:60px;">
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row clearfix">
+                            <div class="col-lg-11 col-md-12 col-sm-8 col-xs-8">
+                                <div class="card" id="hello">
+                                    <div class="header">
+                                        <div class="container">
+                                            <div class="row text-center contact-info">
+                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                                    <hr>
+                                                    <h1><b>INVOICE</b></h1>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                <div class="row pad-top-botm client-info">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                                        <h4> <strong style="color: red;">Client Information</strong>
+                                                        </h4>
+
+                                                        <br>
+                                                        <b style="color: rgb(14, 115, 224);">vendor Name : </b>
+                                                        {{vendor_name}}
+                                                        <br>
+                                                        <b style="color: rgb(14, 115, 224);">Call :</b> +1-908-567-0987
+                                                        <br>
+                                                        <b style="color: rgb(14, 115, 224);">E-mail :</b>
+                                                        info@clientdomain.com
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                                        <h4> <strong style="color: red;">Payment Details </strong></h4>
+                                                        <br>
+
+                                                        <b style="color: rgb(14, 115, 224);">Payment Status : </b>
+                                                        {{payment_status}}
+                                                        <br>
+                                                        <b style="color: rgb(14, 115, 224);"> Purchase Date : </b>
+                                                        {{PO_date}}
+                                                        <br>
+                                                        <b style="color: rgb(14, 115, 224);">Delivery Date :</b>
+                                                        {{GRN_date}}
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                                        <div class="table-responsive">
+                                                            <table
+                                                                class="table table-striped table-bordered table-hover">
+                                                                <thead style="background-color:lavenderblush;">
+                                                                    <tr>
+                                                                        <th>SI.No</th>
+                                                                        <th>GRN_id</th>
+                                                                        <th>GRN_datetime</th>
+                                                                        <th>PO_id</th>
+                                                                        <th>Item Name</th>
+                                                                        <th>Serial Batch</th>
+                                                                        <th>Expiry date</th>
+                                                                        <th>PO Qty</th>
+                                                                        <th>Received Qty</th>
+                                                                        <th>rate</th>
+
+                                                                        <th>Amount</th>
+                                                                        <th>Tax</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                {% for data in stock_entry_child%}
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="background-color:white;">
+                                                                            {{forloop.counter}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.GRN_id}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.GRN_datetime}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.PO_id}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.item_id}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.serial_batch}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.expiry_date}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.item_qty}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.physical_qty}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.rate}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.amount}}</td>
+                                                                        <td style="background-color:white;">
+                                                                            {{data.tax_amount}}</td>
+
+                                                                    </tr>
+
+                                                                </tbody>
+                                                                {% endfor %}
+                                                            </table>
+                                                        </div>
+
+                                                        <div class="ttl-amts" align="right">
+                                                            <h5> <b style="color: red;">Total Amount</b> :
+                                                                {{total_amount}} </h5>
+
+                                                            <h5> <b style="color: red;"> Tax :</b> {{tax}} </h5>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="ttl-amts">
+                                                            <h4> <strong style="color: red;">Bill Amount : </strong>
+                                                                {{bill_amount}} </h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                                        <strong> Important: </strong>
+                                                        <ol>
+                                                            <li>
+                                                                This is an electronic generated invoice so doesn't
+                                                                require any signature.
+
+                                                            </li>
+                                                            <li>
+                                                                Please read all terms and polices on www.yourdomaon.com
+                                                                for returns, replacement and other issues.
+
+                                                            </li>
+                                                        </ol>
+                                                    </div>
+                                                </div>
+                                                <div class="row pad-top-botm" align="center">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                                        <hr>
+                                                        &nbsp;&nbsp;&nbsp;
+                                                        <button class="btn btn-primary btn-lg" onclick="codespeedy()">
+                                                            &nbsp;&nbsp;&nbsp;&nbsp; PDF
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </form>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                               
+                                
+
+                                <style>
+                                    /* CSS */
+                                    .button-24 {
+                                        background: #FF4742;
+                                        border: 1px solid #FF4742;
+                                        border-radius: 6px;
+                                        box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+                                        box-sizing: border-box;
+                                        color: #FFFFFF;
+                                        cursor: pointer;
+                                        display: inline-block;
+                                        font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+                                        font-size: 16px;
+                                        font-weight: 800;
+                                        line-height: 16px;
+                                        min-height: 40px;
+                                        outline: 0;
+                                        padding: 12px 14px;
+                                        text-align: center;
+                                        text-rendering: geometricprecision;
+                                        text-transform: none;
+                                        user-select: none;
+                                        -webkit-user-select: none;
+                                        touch-action: manipulation;
+                                        vertical-align: middle;
+                                    }
+
+                                    .button-24:hover,
+                                    .button-24:active {
+                                        background-color: initial;
+                                        background-position: 0 0;
+                                        color: #FF4742;
+                                    }
+
+                                    .button-24:active {
+                                        opacity: .5;
+                                    }
+                                </style>
+
+                                <br>
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!--scripts-->
+    <!-- jQuery -->
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="../assets/js/jquery.slimscroll.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="../assets/js/select2.min.js"></script>
+    <script src="../assets/js/moment.min.js"></script>
+
+    <!-- Datetime picker JS -->
+    <script src="../assets/plugins/datetimepicker/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Calender JS -->
+    <script src="../assets/js/calendar.min.js"></script>
+
+    <!-- Apex chart JS -->
+    <script src="../assets/js/apex.js"></script>
+
+    <!-- Data table JS -->
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
+    <script src="../assets/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        function print_page() {
+            window.print();
+        }
+    </script>
+    <script>
+        $('example').margetable({
+            type: 1,
+            colindex: [{
+                index: 1,
+                dependent: [0]
+            }]
+        });
+    </script>
+    <script type="text/javascript">
+
+        function codespeedy() {
+            var print_div = document.getElementById("hello");
+            var print_area = window.open();
+            print_area.document.write(print_div.innerHTML);
+            print_area.document.close();
+            print_area.focus();
+            print_area.print();
+            print_area.close();
+            // This is the code print a particular div element
+        }
+    </script>
+    <script>
+
+        // pdf preview
+
+        function printData() {
+            var mypage = document.getElementById("hello");
+            opening = window.open("");
+            opening.document.write(mypage.outerHTML);
+            opening.print();
+            opening.close();
+        }
+
+
+    </script>
+
+    <script>
+        $('example').margetable({
+            type: 1,
+            colindex: [{
+                index: 1,
+                dependent: [0]
+            }]
+        });
+    </script>
+    <script type="text/javascript">
+
+        function codespeedy() {
+            var print_div = document.getElementById("hello");
+            var print_area = window.open();
+            print_area.document.write(print_div.innerHTML);
+            print_area.document.close();
+            print_area.focus();
+            print_area.print();
+            print_area.close();
+            // This is the code print a particular div element
+        }
+    </script>
+
+    <script>
+
+        // pdf preview
+
+        function printData() {
+            var mypage = document.getElementById("hello");
+            summathaan = window.open("");
+            summathaan.document.write(mypage.outerHTML);
+            summathaan.print();
+            summathaan.close();
+        }
+
+        function htmlToCSV(html, filename) {
+            var data = [];
+            var rows = document.querySelectorAll("table tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+
+                for (var j = 0; j < cols.length; j++) {
+                    row.push(cols[j].innerText);
+                }
+
+                data.push(row.join(","));
+            }
+
+            downloadCSVFile(data.join("\n"), filename);
+        }</script>
+</body>
+
+</html>
+
+{% endblock %}

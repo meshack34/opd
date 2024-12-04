@@ -1,0 +1,60 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Main Dashboard -->
+    <div class="container-fluid"><br>
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+          <div class="card">
+            <div class="card-box mb-0">
+              <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Centralied Admin View</b></button>
+              <div class="container-fluid"><br>
+            <div class="header">
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="datatable table table-stripped ">
+
+                    <thead>
+                      <tr style="background-color: rgb(206, 206, 249);">
+                        <!-- <th  bgcolor= "#38ACEC" style="color:black ">S.No.</th> -->
+                        <th>Date</th>
+                        <th>Room No</th>
+                        <th>Doctor Name</th>
+                        <!-- <th  bgcolor= "#38ACEC" style="color:black ">Max Token</th> -->
+                        <th>Token Issued</th>
+                        <th>Current In</th>
+                        <th >Next Waiting</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for data in cav %}
+                      <tr>
+                        <!-- <td>{{data.id}}</td> -->
+                        <td>{{data.Date}}</td>
+                        <td>{{data.Room_No}}</td>
+                        <td>{{data.Doct_Name}}</td>
+                        <!-- <td>{{data.Max_Token}}</td> -->
+                        <td>{{data.Token_No}}</td>
+                        <td>{{data.Pt_Id}}</td>
+                        <td>{{data.Pt_Id|add:'1'}}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

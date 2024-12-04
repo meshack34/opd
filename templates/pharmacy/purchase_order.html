@@ -1,0 +1,413 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+
+  #id_Date,
+  #id_s_no,
+  #id_po_no,
+  #id_vendor,
+  #id_tax,
+  #id_basic_amount,
+  #id_net_amount,
+  #item_name {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- Jquery UI for AutoComplete -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="color: white;" href="#">Purchase Order </a>
+      </div>
+    </nav><br>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+          <div class="card">
+            <div class="header">
+              <div class="body">
+                <form class="p-3" method="post" id="POcalculate">
+                  {% csrf_token %}
+                  <div class="icon-button-demo">
+                    <button type="submit" class="btn btn-success" name="saved" value="saved" id="add_purchase_order"> <i
+                        class="fas fa-save pr-2"></i>Save</button>
+                    <a href="/PO_preview" class="btn btn-warning"><i class="fa fa-print pr-2"></i>PreView</a>
+                    <button type="reset" class="btn btn-primary" onClick="window.location.reload();"> <i
+                        class="fas fa-sync-alt pr-2"></i>Refresh</button>
+                    <a href="" class="btn btn-info"> <i class="fa fa-arrow-circle-left">&nbsp;Back</i></a>
+                    <a href="/dashboard" class="btn btn-danger"> <i class="fas fa-times-circle pr-2"></i>Exit</a>
+
+
+                  </div>
+
+                  <br>
+                  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <!-- <a class="navbar-brand" href="#">Items</a> -->
+                    <a href="">
+                      <button type="button" class="btn btn-light">Items</button>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                      data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                      aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav mr-auto">
+                        <li class="nav-item ">
+                          <a class="nav-link" style="color: white;" href="#">Details </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" style="color: white;" href="#">Discount: 0</a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">CGST :0</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">SGST :0</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">IGST :0</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">Total GST :0</a>
+                        </li>
+                      </ul>
+
+                    </div>
+                  </nav>
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped auto-index">
+                      <thead>
+                        <tr>
+                          <th>Item_Name</th>
+                          <th>Unit</th>
+                          <th>Qty</th>
+                          <th>Rate</th>
+                          <th>Free Qty</th>
+                          <th>Stock Qty</th>
+                          <th>Schema%</th>
+                          <th>Dis%</th>
+                          <th>Dis Amt</th>
+                          <th>Amount</th>
+                          <th>Tax Details</th>
+                          <th></th>
+                          <!-- <th><a href="javascript:;" class="btn btn-success" id="add_button">+</a></th> -->
+
+                        </tr>
+                        <tr></tr>
+                      </thead>
+                      <tbody>
+
+                        <tr class="clonetr" id="addrow">
+                          <!-- <td >
+                          <input class="text"  name="item_name" id="item_name" list="drop" class="form-control">
+                         
+                          </td> -->
+                          <td><input type="text" name="item_name" id="item_name" data-uhid-url="{% url 'calculate' %}"
+                              list="item" class="form-control"></td>
+                          <td><input type="text" name="unit1" id="unit1" class="form-control"><input type="hidden"
+                              name="unit_id" id="unit_id" class="form-control"></td>
+                          <td><input type="text" name="qty" id="qty" class="form-control"></td>
+                          <td><input type="text" name="rate" id="rate" class="form-control"></td>
+                          <td><input type="text" name="free_qty" id="free_qty" class="form-control"></td>
+                          <td><input type="text" name="stock_qty" id="stock_qty" class="form-control"></td>
+                          <td><input type="text" name="schema" id="schema" class="form-control"></td>
+                          <td><input type="text" name="discount" id="discount" class="form-control"></td>
+                          <td><input type="text" name="discount_amt" id="discount_amt" class="form-control"></td>
+                          <td><input type="text" name="amount" id="amount" class="form-control"></td>
+                          <td><input type="text" name="tax_details" id="tax_details" class="form-control"></td>
+                          <td><button class="btn btn-primary" type="submit" name="add_button" id="save_temp"
+                              value="save_temp" id="save_temp">+Add</button></td>
+                          <!-- <td><a href="javascript:;" class="btn btn-primary deleteButton">-</a></td> -->
+                        </tr>
+                        <datalist id='item'>
+                          {% for data in item %}
+                          <option value="{{data.id}}.{{data.item_name}}"></option>
+                          {% endfor %}
+                        </datalist>
+                        <tr></tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+                  <br><br><br>
+
+                  <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                    <div class="form-row">
+
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Vendor</b></label>
+                        <select name="vendor_id" id="vendor_id" class="form-control">
+                          <option>select</option>
+                          {% for data in vendar %}
+                          <option value="{{data.id}}">{{data.vendor_name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Department</b></label>
+                        <input type="text" name="department_name" id="department_name" class="form-control" value="{{store_detail.department_id}}">
+                        <input type="hidden" name="department" id="department" class="form-control" value="{{store_detail.department_id_id}}">
+                        <!-- <select name="department" id="department" class="form-control">
+                          <option>Select</option>
+                          {% for data in dept_detail %}
+                          <option value="{{data.id}}">{{data.service_department}}</option>
+                          {% endfor %}
+                        </select> -->
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Location</b></label>
+                        <select name="po_location" id="po_location" class="form-control">
+                          <option>Select</option>
+                          {% for data in location_detail %}
+                          <option value="{{data.id}}">{{data.location_name}}</option>
+                          {% endfor %}
+                        </select>
+                        <input type="hidden" name="location" id="location" class="form-control" value="{{store_detail.location_id_id}}">
+                        <!-- <input type="text" name="location_name" id="location_name" class="form-control" value="{{store_detail.location_id}}">
+                         -->
+                        <!-- <select name="location" id="location" class="form-control">
+                          <option>Select</option>
+                          <option>Naraboi</option>
+                          <option>Mumbasa</option>
+                          <option>Muranga</option>
+
+                        </select> -->
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Store</b></label>
+                        <input type="text" name="store_name" id="store_name" class="form-control" value="{{store_detail.store_name}}">
+                        <input type="hidden" name="store_id" id="store_id" class="form-control" value="{{store_detail.id}}">
+                        </div>
+                      <!-- <div class="form-group col-md-2 mb-0">
+                        <label><b>Tax</b></label>
+                        <select name="tax" id="tax" class="form-control">
+                          <option>Select</option>
+                          <option>5%</option>
+                          <option>12%</option>
+                          <option>18%</option>
+                          <option>22%</option>
+                          <option>28%</option>
+                        </select>
+                      </div> -->
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b> Basic Amount</b></label>
+                        <input type="text" name="basic_amount" id="basic_amount" value="{{basic_amount}}"
+                          class="form-control">
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Net Amount</b></label>
+                        <input type="text" name="net_amount" id="net_amount" value={{netamount}} class="form-control">
+                      </div>
+
+
+                      <!-- <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;  -->
+
+                    </div><br><br>
+                    <div class="table-responsive">
+                      {% if temp_saved == temp_saved %}
+                      <table class="datatable table table-stripped auto-index">
+                        <thead>
+                          <tr>
+                            <th>S.No</th>
+                            <th>Item_Name</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Free Qty</th>
+                            <th>Stock Qty</th>
+                            <th>Rate</th>
+                            <th>Schema%</th>
+                            <th>Dis%</th>
+                            <th>Dis Amt</th>
+                            <th>Amount</th>
+                            <th>Tax Details</th>
+                          </tr>
+                        </thead>
+                        {% for data in po_temp %}
+                        <tbody style="background-color: white;">
+
+
+                          <tr class="clonetr" id="addrow">
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.item_ID}}</td>
+                            <td><input type="hidden" name="qty[]" id="qty" value="{{data.quantity}}">{{data.quantity}}
+                            </td>
+                            <td><input type="hidden" name="unit[]" id="unit" value="{{data.unit}}">{{data.unit}}</td>
+                            <td><input type="hidden" name="free_qty[]" id="free_qty"
+                                value="{{data.free_qty}}">{{data.free_qty}}</td>
+                            <td><input type="hidden" name="stock_qty[]" id="stock_qty1"
+                                value="{{data.stock_qty}}">{{data.stock_qty}}</td>
+                            <td><input type="hidden" name="rate[]" id="rate" value="{{data.rate}}">{{data.rate}}</td>
+                            <td><input type="hidden" name="schema[]" id="schema1"
+                                value="{{data.schema}}">{{data.schema}}</td>
+                            <td><input type="hidden" name="discount[]" id="discount1"
+                                value="{{data.discount}}">{{data.discount}}%</td>
+                            <td><input type="hidden" name="discount_amt[]" id="discount_amt1"
+                                value="{{data.discount_amt}}">{{data.discount_amt}}</td>
+                            <td><input type="hidden" name="amount[]" id="amount1"
+                                value="{{data.amount}}">{{data.amount}}</td>
+                            <td><input type="hidden" name="tax_details[]" id="tax_details1"
+                                value="{{data.tax_details}}">{{data.tax_details}}</td>
+
+
+                          </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% endif %}
+                      </table>
+
+                    </div>
+
+
+                </form>
+              </div>
+
+            </div>
+            </form>
+
+            <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+            <script type="text/javascript">
+              $(document).ready(function () {
+                $(document).on('keyup', '#item_name', function () {
+                  var Item_namea = this.value;
+                  var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                  const url = $("#item_name").attr("data-uhid-url");
+                  const url1 = "{% url 'get_stock_details' %}";
+
+
+                  $.ajax({
+                    url: url,
+                    type: "post",
+                    data: {
+                      Item_name1: Item_namea,
+                    },
+                    dataType: 'json',
+                    headers: headers,
+                    success: function (data) {
+                      $('#unit1').val(data["data1"]);
+                      $('#unit_id').val(data["unit_id"]);
+                      var item_id = data["item_id"];
+                      
+                      $.ajax({
+                        url: url1,
+                        type: "post",
+                        data: {
+                          item_id: item_id,
+                        },
+                        dataType: 'json',
+                        headers: headers,
+                        success: function (data) {
+                          $('#stock_qty').val(data["total_qty"]);
+                          $('#rate').val(data["rate"]);
+                        },
+                        error: function (data) {
+                          console.log(data);
+                        }
+                      });
+
+                    },
+                    error: function (data) {
+                      console.log(data);
+                    }
+                  });
+
+
+                });
+              });
+            </script>
+
+            <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+            <script>
+              $(document).ready(function () {
+
+                $(document).on('keyup', '#qty', function () {
+                  var qty = this.value;
+                  var rate = $('#rate').val();
+                  if (rate == 0){
+                    var amount1 = 0;
+                  }else{
+                    var amount1 = qty * rate;
+                  }
+                  
+                  $('#amount').val(amount1);
+
+                });
+
+                $(document).on('keyup', '#rate', function () {
+                  var rate = this.value;
+                  var qty = $('#qty').val();
+                  var amount1 = qty * rate;
+                  
+                  $('#amount').val(amount1);
+
+                });
+
+                $(document).on('keyup', '#schema', function () {
+                  var qty = $('#qty').val();
+                  var rate = $('#rate').val();
+                  var schema = $('#schema').val();
+                  var amount = $('#amount').val();
+                  var amount1 = qty * rate
+                  var schema_cal = (amount1 * schema) / 100;
+                  var amount1 = amount - schema_cal;
+
+                  $('#amount').val(amount1);
+
+                });
+
+                $(document).on('keyup', '#discount', function () {
+                  var amount = $('#amount').val();
+                  var discount = $('#discount').val();
+                  var qty = $('#qty').val();
+                  var rate = $('#rate').val();
+                  var discount1 = qty * rate * discount
+                  var discount_amount = parseInt(parseFloat(discount1 / 100));
+                  var amount1 = amount - discount_amount;
+                  var amount3 = parseFloat(amount1);
+                  var amount2 = parseInt(amount3);
+
+                  $('#discount_amt').val(discount_amount);
+                  $('#amount').val(amount2);
+
+                });
+
+                $(document).on('keyup', '#tax_details', function () {
+                  var tax = $('#tax_details').val();
+                  var qty = $('#qty').val();
+                  var amount1 = $('#amount').val();
+                  var rate = $('#rate').val();
+                  var amount = qty * rate;
+                  var tax_amount = (amount * tax) / 100;
+                  var tax_detail = parseInt(amount1) + parseInt(tax_amount);
+                  $('#amount').val(tax_detail);
+
+                });
+
+              });
+            </script>
+
+
+
+            {% endblock %}

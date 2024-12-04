@@ -1,0 +1,118 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+
+<style>
+    #id_from_date,#id_to_date,#id_sub_store{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    .btn_width {
+      width: 150px !important;
+      padding-bottom: 10px;
+    }
+
+
+    </style>
+  {% endblock  %}
+  {% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+   <div class="container-fluid">
+       <a class="navbar-brand" style="color: white;" href="#">Indent Inbox</a>
+   </div>
+ </nav><br>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+           <div class="card p-3">
+               <div class="header">
+                <div class="body">
+               <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                   <form method="post">
+                     {% csrf_token %}
+                     <div class="form-row pb-3">
+                      <div class="form-group col-md-3 mb-0">
+                        <label>From Date</label>
+                        <input type='date' name='from_date' id='from_date' class='form-control'>
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                        <label>To Date</label>
+                        <input type='date' name='to_date' id='to_date' class='form-control'>
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                        <label>Sub Store</label>
+                        <select name='sub_store' id='sub_store' class='form-control'>
+                          <option>select</option>
+                          {% for data in substore %}
+                            <option value="{{data}}">{{data}}</option>
+                          {% endfor %}
+                        </select>
+                        </div>
+                      <div class="col-md-3 px-1 pt-4">
+                       <button type="submit" class="btn btn-warning w-100 mt-2" name="search" value="search" ><i class="fa fa-search pr-2" ></i>Search</button>
+                     </div>
+                     </div>
+                     <div class="d-flex justify-content-between flex-wrap">
+                     <div class="btn_width">
+                       <button type="button" class="btn btn-warning w-100 text-nowrap" ><i class="fa fa-upload pr-2" ></i>New Indent</button>
+                     </div>
+                     <div class="btn_width">
+                        <button type="button" class="btn btn-warning w-100 text-nowrap" ><i class="fa fa-upload pr-2" ></i>1st Verification</button>
+                      </div>
+                      <div class="btn_width">
+                        <button type="button" class="btn btn-warning w-100 text-nowrap" ><i class="fa fa-upload pr-2" ></i>2nd Verification</button>
+                      </div>
+                      <div class="btn_width">
+                        <button type="button" class="btn btn-warning w-100 text-nowrap" ><i class="fa fa-upload pr-2" ></i>Cancel Indent</button>
+                      </div>
+                      <div class="btn_width">
+                        <button type="button" class="btn btn-warning w-100 text-nowrap"><i class="fa fa-print pr-2" ></i>Print</button>
+                    </div>
+                    <div class="btn_width">
+                       <button type="button" class="btn btn-primary w-100 text-nowrap"  onClick="window.location.reload();"> <i class="fas fa-sync-alt pr-2" ></i>Refresh</button>
+                     </div>
+                     <div class="btn_width">
+                       <button type="button" class="btn btn-danger w-100 text-nowrap"> <i class="fas fa-times-circle pr-2"></i>Exit</button>
+                     </div>
+                     
+                     <!-- <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>  -->
+                    
+                    
+                 </div>
+                 
+                   
+
+</div>
+<br>
+<div class="table-responsive">
+    <table class="datatable table table-stripped ">
+                   <thead>
+                       <tr><th>S.No</th>
+                           <th>Indent No.</th>
+                           <th>Date Time</th>
+                           <th>Sub Store</th>
+                       </tr>
+                   </thead>
+                   {% for data in material_intent_parent %}
+                   <tbody>
+                    
+                       <tr>
+                           <td>{{forloop.counter}}</td>
+                           <td>{{data.intent_id}}</td>
+                           <td>{{data.intent_datetime}}</td>
+                           <td>{{data.substore_id}}</td>
+                       </tr>
+                       
+                    </tbody>
+                    {% endfor %}
+           </table>
+          </form>
+           </div>
+        
+           {% endblock %}

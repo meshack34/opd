@@ -1,0 +1,221 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    .form-control {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: white;" href="#">Batch Wise Stock Report</a>
+            </div>
+        </nav><br>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                    <div class="card">
+                        <div class="header">
+                            <div class="body">
+                                <br>
+                                <div class="icon-button-demo">&nbsp;
+                                    <button type="button" class="btn btn-primary" onClick="window.location.reload();">
+                                        <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                                    <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                                    <button type="button" class="btn btn-warning" onclick="print_view()"><i
+                                            class="fa fa-print">PreView</i></button>&nbsp;
+                                    <input type="hidden" name="store_ids" id="store_ids" value="">
+                                    <input type="hidden" name="item_category" id="item_category" value="">
+                                    <input type="hidden" name="item_subcategory" id="item_subcategory" value="">
+                                    <input type="hidden" name="item_ids" id="item_ids" value="">
+                                </div><br>
+                                <br>
+                                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                    style="background-color:rgb(233, 233, 233);"><br>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-2 mb-0">
+                                                <label style="font-weight: bold;"><b>Store Name*</b> </label>
+                                                <select class='form-control' name='store_id' id='store_id' style="background-color: white;" required>
+                                                    <option value="">Select</option>
+                                                    {% for data in store_id%}
+                                                    <option value="{{data.id}}">{{data.store_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-2 mb-0">
+                                                <label style="font-weight: bold;"><b>Item Category</b> </label>
+                                                <select name='item_cate' id='item_cate' style="background-color: white;" class='form-control'>
+                                                    <option value=""> Select</option>
+                                                    {% for data in item_cat %}
+                                                    <option value="{{data.id}}">{{data.item_category}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-2 mb-0">
+                                                <label style="font-weight: bold;"><b>Sub Category</b> </label>
+                                                <select name='item_subcate' id='item_subcate' style="background-color: white;" class='form-control'>
+                                                    <option value="">Select</option>
+                                                    {% for data in item_subcat%}
+                                                    <option value="{{data.id}}">{{data.itemsubcategory}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-2 mb-0">
+                                                <label style="font-weight: bold;"><b>Item Name</b> </label>
+                                                <input type="text" name="item_name" list="item" style="background-color: white;" class='form-control'>
+                                            </div>
+
+                                            <datalist id="item">
+                                                {% for data in item_name %}
+                                                <option value="{{data.id}}.{{data.item_name}}"></option>
+                                                {% endfor %}
+                                            </datalist>
+
+                                            <div class=" col-md-1"><br>
+                                                <button type="submit" name="search" value="search"
+                                                    class="btn btn-warning w-100 mt-2"><i
+                                                        class="fa fa-search pr-2"></i>Search</button>
+                                            </div>
+
+
+                                        </div>
+                                        <br>
+
+                                    </form>
+
+                                </div>
+                                <br><br>
+                                <div class="mytable">
+                                    <div class="table-responsive ">
+                                        <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                              <tr>
+
+                                      <div class="" >
+                                          <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                          </center>
+                                      </div>
+
+                              </tr>
+                          </table>
+
+                          <style>
+                              table, th, td {
+                                border: 1px solid black;
+                                border-collapse: collapse;
+
+                              }
+                              #button2{
+                              font-size: larger;
+                              padding: 10px;
+                              border: none;
+                              border-radius: 5px;
+                          }
+                              </style>
+                              <center><h3> Batchwise Report</h3></center>
+                                        <table class="datatable table table-stripped">
+                                            <thead style="background-color:rgb(211, 211, 252);">
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Item Name</th>
+                                                    <th>Batch No</th>
+                                                    <th>Expiry Date</th>
+                                                    <!-- <th>Item Code</th>
+                                                    <th>Item Category</th>
+                                                    <th>Sub Category</th> -->
+                                                    <th>Qty In-hand</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if mainstore%}
+                                               
+                                                {% for data in mainstore %}
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{data.item_id}}</td>
+                                                    <td>{{data.batch_no}}</td>
+                                                    <td>{{data.expiry_date}}</td>
+                                                    <!-- <td>{{data.item_id.shortcode}}</td>
+                                                    <td>{{data.item_id.item_category.item_category}}</td>
+                                                    <td>{{data.item_id.item_subcategory.itemsubcategory}}</td> -->
+                                                    <td>{{data.available_qty}}</td>
+
+
+                                                </tr>
+                                                {% endfor %}
+                                                {% endif %}
+                                                {% if substore %}
+                                                {% for data in substore %}
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{data.item_id}}</td>
+                                                    <td>{{data.serial_batch}}</td>
+                                                    <td>{{data.expiry_date}}</td>
+                                                    <!-- <td>{{data.item_id.shortcode}}</td>
+                                                    <td>{{data.item_id.item_category.item_category}}</td>
+                                                    <td>{{data.item_id.item_subcategory.itemsubcategory}}</td> -->
+                                                    <td>{{data.available_qty}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                                {% endif %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function print_view() {
+                                        var store_name = $('#store_ids').val();
+                                        var item_name = $('#item_ids').val();
+                                        var item_cate = $('#item_category').val();
+                                        if (item_cate == '') {
+                                            item_cate = '';
+                                        }
+                                        var item_subcate = $('#item_subcategory').val();
+                                        if (item_subcate == '') {
+                                            item_subcate = '';
+                                        }
+
+                                        $.ajax({
+                                            url: "",
+                                            type: "post",
+                                            data: {
+                                                store_name: store_name,
+                                                item_cate: item_cate,
+                                                item_name: item_name,
+                                                item_subcate: item_subcate,
+                                                _token: ''
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                if (data.item_cate == '') {
+                                                    data.item_cate = '';
+                                                }
+                                                if (data.item_subcate == '') {
+                                                    data.item_subcate = '';
+                                                }
+                                                window.location.href = "" +
+                                                    "/" + data.store_name + "/" + data.item_cate + "/" + data.item_name + "/" + data.item_subcate;
+                                            },
+                                            error: function (data) {
+                                                console.log(data);
+                                            }
+                                        });
+                                    }
+                                </script>
+
+                                {% endblock %}

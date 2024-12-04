@@ -1,0 +1,291 @@
+
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+<div class="page-wrapper" xmlns="http://www.w3.org/1999/html">
+    <div class="content" >
+    <div class="container" style="border: 1px solid rgb(121, 118, 118);padding: 10px;" id="hello">
+        <h5 style="text-align: center;"> Post Dialysis Detail</h5>
+        <br>
+        <div class="col-md-12">
+            {% if 'post_dialysis_save' in access.user_profile.screen_access or request.user.is_superuser %}
+        <form method="post">
+            {% csrf_token %}
+            <h5><b>Patient Details</b></h5>
+            <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                <div class="col-md-4">
+                    <label>MR NO: <b>{{uhid_pat}}</b></label>
+<!--                    <input type="text" class="form-control" name="uhid">-->
+                </div>
+                <div class="col-md-4">
+                    <label>NAME: <b>{{pat_name| upper}}</b></label>
+<!--                    <input type="text" class="form-control">-->
+                </div>
+                <div class="col-md-4">
+                    <label> AGE/GENDER: <b>{{pat_age}}y/{{pat_sex}}</b></label>
+<!--                    <input type="text" class="form-control">-->
+                </div>
+                <div class="col-md-4">
+                    <label>CONTACT NO: <b>{{pat_con_no}}</b></label>
+<!--                    <input type="text" class="form-control">-->
+                </div>
+            </div
+            <br>
+            <h5><b>Session Details</b></h5>
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-4">
+                        <label>Status</label>
+                        <select class="form-control" name="status">
+                            <option>---select---</option>
+                            {% for sat in status %}
+                            <option>{{sat.status}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Closing Attendent:</label>
+                        <select class="form-control" name="closing_attendent">
+                            <option>---select---</option>
+                            {% for close in closing %}
+                            <option>{{close.closing_attendent}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Completion Status:</label>
+                        <select class="form-control" name="completion_status">
+                            <option>---select---</option>
+                            {% for comp in completion_sataus %}
+                            <option>{{comp.completion_Status}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>End Time:</label>
+                        <input type="datetime-local" class="form-control"name="end_time">
+                    </div>
+                    <div class="col-md-8">
+                        <label> Duration:</label>
+                        <input type="text" class="form-control"  name="duration">
+                    </div>
+                    <div class="col-md-4">
+                        <label> Next Dialysis Date:</label>
+                        <input type="date" class="form-control" name="next_day_dialysis">
+                    </div>
+                     <div class="col-md-8">
+                        <label> Shift :</label>
+                        <select class="form-control" name="shift">
+                            <option>---select---</option>
+                            {% for shift in shift %}
+                            <option>{{shift.shift_name}}</option>
+                            {% endfor %}
+                        </select>
+                     </div>
+                </div>
+            </div>
+            <br>
+                <h5><b>Patient Condition</b></h5>
+                <div class="col-md-12">
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                <div class="col-md-2">
+                    <label>BP Sitting:</label>
+                    <input type="text" class="form-control" name="bp_sitting_max">
+                </div>
+                <div class="col-md-2">
+                    <label>.</label>
+                    <input type="text" class="form-control" name="bp_sitting_min">
+                </div>
+                <div class="col-md-2">
+                    <label>BP Standing:</label>
+                    <input type="text" class="form-control"  name="bp_standing_max">
+                </div>
+                <div class="col-md-2">
+                    <label>.</label>
+                    <input type="text" class="form-control" name="bp_standing_min">
+                </div>
+                <div class="col-md-4">
+                    <label>Respiration:</label>
+                    <input type="text" class="form-control" name="respiration">
+                </div>
+                <div class="col-md-4">
+                    <label>Pulse sitting :</label>
+                    <input type="text" class="form-control" name="pulse_sitting">
+                </div>
+                <div class="col-md-4">
+                    <label> Pulse Standing: </label>
+                    <input type="text" class="form-control" name="pulse_standing">
+                </div>
+                 <div class="col-md-4">
+                    <label> Tempreture (F): </label>
+                    <input type="text" class="form-control" value="" name="tempreture">
+                </div>
+                <div class="col-md-4">
+                    <label> Measured wt: </label>
+                    <input type="text" class="form-control" value="" name="measured_wt">
+                </div>
+                <div class="col-md-4">
+                    <label> Wheelchair wt: </label>
+                    <input type="text" class="form-control" value="" name="wheelchair_wt">
+                </div>
+                <div class="col-md-4">
+                    <label> Prosthetic Wt: </label>
+                    <input type="text" class="form-control" value="" name="prosthetic_wt">
+                </div>
+                <div class="col-md-4">
+                    <label>Condition/Assessment: </label>
+                    <textarea type="text" class="form-control" value="" placeholder="Stable" name="condition_assessment"></textarea>
+                </div>
+                  <div class="col-md-4">
+                    <label> Prolonged Bleeding at punctured sites: </label>
+                      <select class="form-control" name="prolonged_bleeding_at_punctured_sites">
+                          <option>---select---</option>
+                          <option>Yes </option>
+                          <option>No </option>
+                      </select>
+                </div>
+                </div>
+                    </div>
+                    <br>
+                     <h5><b>Dialysis Details</b></h5>
+                    <div class="col-md-12">
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                <div class="col-md-4">
+                    <label>Weight lost</label>
+                    <input type="text" class="form-control" value="" name="weight_lost">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Fluid Removed:</label>
+                    <input type="text" class="form-control" value="" name="fluid_removed">
+                </div>
+                <div class="col-md-4">
+                    <label>UF Rate</label>
+                    <input type="text" class="form-control" value="" name="uf_rate">
+                </div>
+                <div class="col-md-4">
+                    <label>Heparin Left:</label>
+                    <input type="text" class="form-control" name="heparin_Left">
+                </div>
+                <div class="col-md-4">
+                    <label>Total Heparin infused :</label>
+                    <input type="text" class="form-control" value="" name="total_heparin_infused">
+                </div>
+                     <div class="col-md-4">
+                    <label>Dialyzer Rating</label>
+                    <select class="form-control" name="dialyzer_rating">
+                        <option>---select---</option>
+                        {% for dial in rating %}
+                        <option>{{dial.rating}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Bruit/Thrill</label>
+                    <select class="form-control" name="bruit_thrill">
+                        <option>---select---</option>
+                        {% for brui in bruit %}
+                        <option>{{brui.bruit_thrill}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label> Minimum BP: </label>
+                    <input type="text" class="form-control" value="" name="minimum_BP_max">
+                </div>
+                 <div class="col-md-2">
+                    <label>.</label>
+                    <input type="text" class="form-control" value="" name="minimum_BP_min">
+                </div>
+                <div class="col-md-12">
+                    <label> Minimum BP Time: </label>
+                    <input type="text" class="form-control" value="" name="minimum_BP_time">
+                </div>
+                <div class="col-md-4">
+                    <label>Dialysis Odometer End Reading: </label>
+                    <input type="text" class="form-control" value="" name="dialysis_odometer_end_eading">
+                </div>
+                <div class="col-md-4">
+                    <label> Completion Notes: </label>
+                    <textarea type="text" class="form-control" value="" placeholder="discharge stable" name="completion_notes"></textarea>
+                </div>
+                <div class="col-md-4">
+                    <label>Notes to be shown in next Pre Dialysis Session: </label>
+                    <textarea type="text" class="form-control" value="" placeholder="patient is stable continue dialysis" name="next_pre_dialysis_notes"></textarea>
+                </div>
+                </div>
+                        <br>
+                        <br>
+                <div class="col-md-2">
+                    <input type="submit" class="btn btn-primary" value="Save">
+                </div>
+        </form>
+        {% endif %}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="table-responsive">
+            {% if 'post_dialysis_view' in access.user_profile.screen_access or request.user.is_superuser %}
+            <table class="datatable table table-stripped ">
+                <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Presc Date</th>
+                    <th>Name</th>
+                    <th>Dosage</th>
+                    <th>Route</th>
+                    <th>Remark</th>
+                    <th>Quantity</th>
+                    <th>Batch No </th>
+                    <th>Expiry Date </th>
+                    <th>Administered By</th>
+                    <th>Doctor </th>
+                    <th>Print</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in post_dialysis %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.uhid}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.status}}</td>
+                        {% if 'post_dialysis_print' in access.user_profile.screen_access or request.user.is_superuser %}
+                        <td><a href="/view_post_dialysis/{{data.id}}">print</a> </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- print -->
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+
+<!--</body>-->
+{% endblock %}

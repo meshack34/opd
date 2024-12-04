@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+
+
+{% block head_block %}
+{% load static %}
+<!--This for payment receipt print function-->
+<div id="hello">
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td>
+						<div class="" >
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.png' %}" alt="logo Image" style="width:500px;height:100px;"></h2></center>
+							
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Invoice</h3></td>
+				</tr>
+                <tr>
+					<th>Patient Name</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.patient_name}}</td>
+                    <th>Age</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.age}}</td>
+					
+				</tr>
+
+				<tr>
+					<th>Reg. No.</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.uhid}}</td>
+					<th>Payment Mode</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.type}}</td>
+				</tr>
+				<tr>
+					<th>Consultant</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.consultant_name}}</td>
+					<th>OPD No</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.opd_no}}</td>
+				</tr>
+				<tr>
+					<th>Mobile</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.mobile}}</td>
+                    <th>Panel</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.panel}}</td>
+					
+				</tr>
+				<tr>
+					<th>Gender</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.gender}}</td>
+
+				</tr>
+			</table>
+		</td>
+	</tr>
+<!-- table -->
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">SI</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Op salesno</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Sale Return ID</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Sales Return Date</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Item Name</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Sale QTY</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Return QTY</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Sale Amount</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Return Amount</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Rate</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Discount</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Reason</th>
+				</tr>
+				<tr>
+					{% for data in sales_return_child%}
+				<tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{data.sales_no}}</td>
+                  <td>{{data.sales_return_id}}</td>
+				  <td>{{data.sales_return_date}}</td>
+                  <td>{{data.item_id}}</td>
+                  <td>{{data.sale_qty}}</td>
+                  <td>{{data.return_qty}}</td>
+                  <td>{{data.sale_amount}}</td>
+				  <td>{{data.return_amount}}</td>
+                  <td>{{data.rate}}</td>
+				  <td>{{data.discount}}</td>
+				  <td>{{data.reason}}</td>
+              </tr>
+			  {% endfor %}
+				
+				<tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td style="color: #2618f0;">Total Amount</td>
+					<td>: {{PSCounterSale_Parent.total_taxable_amount}}</td>
+              </tr>
+				
+			</table>
+		</td>
+	</tr>
+
+</table>
+</div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;" id="billgenerate">Print</button>
+
+<script type="text/javascript">
+        
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+
+  {% endblock %}
+</body>
+</html>

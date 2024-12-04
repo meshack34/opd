@@ -1,0 +1,207 @@
+
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #id_indent_no,#id_indent_datetime,#id_sub_store,#id_priority,#id_item_name,#id_quantity,#id_item_code,#id_item_belongs_to,#id_remark{
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+       background-color: rgb(233, 233, 233);
+       border-bottom: 1px solid black;
+    }
+    </style>
+
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+   <div class="container-fluid">
+       <a class="navbar-brand" style="color: white;" href="#">Vendor Payment</a>
+   </div>
+ </nav><br>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+           <div class="card">
+               <div class="header">
+       <div class="body">
+               <br><div class="icon-button-demo">&nbsp;
+
+                   <button type="submit"class="btn btn-success" name="save_all" value="save_all" form="saveall"> <i class="fas fa-save" ></i>&nbsp;&nbsp;Save</button>&nbsp;
+                   <button type="button" class="btn btn-warning"><i class="fa fa-print" >&nbsp;&nbsp;Print</i></button>&nbsp;
+                   <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" ></i>&nbsp;&nbsp;Refresh</button>&nbsp;
+                   <a href="" class="btn btn-danger"> <i class="fas fa-times-circle"></i>&nbsp;&nbsp;Exit</a>
+
+
+               </div><br>
+               <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                   <!-- <form method="post" > -->
+                    {% csrf_token %}
+                     <div class="form-row">
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>From Date*</b> </label>
+                        <input type="date" name="from_date" id="from_date" class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-2 mb-0">
+                        <label><b> To Date*</b></label>
+                        <input type="date" name="to_date" id="to_date" class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-2 mb-0">
+                            <label><b>Vendor</b></label>
+                            <select name="vendor_id" id="vendor_id" class="form-control">
+                                <option>select</option>
+                                {% for data in vendor_name_1%}
+                                <option value="{{data.vendor_name}}">{{data.vendor_name}}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class=" col-md-1"><br>
+                            <button type="submit" name="search_po" value="search_po" class="btn btn-warning w-100 mt-2"><i
+                                class="fa fa-search pr-2"></i>Search</button>
+                          </div>
+                 </div>
+
+                   <!-- </form> -->
+                   <br>
+                </div><br><br>
+
+
+           <div class="table-responsive">
+            <form method="post" id="saveall" data-cities-url="{% url 'meterial_intent_JS' %}">
+                {% csrf_token %}
+             <table class= "datatable table table-stripped">
+
+
+                   <thead>
+                       <tr><th>S No</th>
+                        <th>Location</th>
+                           <th>Vendor</th>
+                           <th>Payment Mode</th>
+                           <th>Payment Terms</th>
+                           <th>Invoice No</th>
+                           <th>PO No</th>
+                           <th>PO Date</th>
+                           <th>GRN No</th>
+                           <th>GRN Date</th>
+                           <th>GRN Amount</th>
+                           <th>Payable Amount</th>
+                           <th>OutStanding Amount</th>
+                           <th>Paid Amount</th>
+                           <th>Pay</th>
+                       </tr>
+                   </thead>
+
+                    {% csrf_token %}
+                   <tbody>
+                    {% for data1,data2,data3 in stock_entry_parent2%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><input type="hidden" name="location_id" id="location_id" value="{{data1.location_id_id}}">
+                            <input type="hidden" name="po_location" id="po_location" value="{{data1.po_location_id}}">{{data1.po_location}}</td>
+                        <td><input type="hidden" name="vendor_id" id="vendorid" value="{{data1.vendar_id_id}}">{{data2}}
+                            <input type="hidden" name="department_id" id="department_id" value="{{data1.department_id}}">
+                            <input type="hidden" name="store_id" id="store_id" value="{{data1.store_id_id}}">
+                            </td>
+                        <td>{{data1.vendar_id.payment_mode}}</td>
+                        <td>{{data1.vendar_id.payment_terms}}</td>
+                        <td><input type="hidden" name="invoice_no" id="invoice_no" value="{{data1.invoice_no}}">{{data1.invoice_no}}</td>
+                        <td><input type="hidden" name="po_id" id="po_id" value="{{data1.PO_id}}">{{data1.PO_id}}</td>
+                        <td><input type="hidden" name="po_date" id="po_date" value="{{data1.PO_datetime}}">{{data1.PO_datetime}}</td>
+                        <td><input type="hidden" name="grn_id" id="grn_id" value="{{data1.GRN_id}}">{{data1.GRN_id}}</td>
+                        <td><input type="hidden" name="grn_date" id="grn_date" value="{{data1.GRN_datetime}}">{{data1.GRN_datetime}}</td>
+                        <td><input type="hidden" name="net_amt" id="net_amt" value="{{data1.GRN_amount}}"><center>{{data1.GRN_amount}}</center></td>
+                        <td><input type="hidden" name="payable_amt" id="payable_amt" class="form-control" value="{{data1.GRN_amount}}"><center>{{data1.GRN_amount}}</center></td>
+                        <td><input type="text" name="outstand_amt" id="outstand_amt" class="form-control" readonly value="{{data3}}"></td>
+                        <td><input type="text" name="paid_amt1" id="paid_amt" class="form-control"></td>
+                        <td><button type="button" class="btn btn-primary" name="vendor_payment" id="vendor_payment"  onclick="vendor()"><i class="fa fa-save"></i></button></td>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+           </table>
+           </form>
+           </div>
+           <!-- <h3 align="center">Please Seach </h3> -->
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $(document).on('click', '#vendor_payment', function () {
+        var dumy = this;
+        var vendor_id = $(dumy).closest('tr').find('#vendorid').val();
+      var invoice_no = $(dumy).closest('tr').find('#invoice_no').val();
+      var po_id = $(dumy).closest('tr').find('#po_id').val();
+      var po_date = $(dumy).closest('tr').find('#po_date').val();
+      var grn_id = $(dumy).closest('tr').find('#grn_id').val();
+      var grn_date = $(dumy).closest('tr').find('#grn_date').val();
+      var net_amt = $(dumy).closest('tr').find('#net_amt').val();
+      var payable_amt = $(dumy).closest('tr').find('#payable_amt').val();
+      var paid_amt = $(dumy).closest('tr').find('#paid_amt').val();
+      var department_id = $(dumy).closest('tr').find('#department_id').val();
+      var store_id = $(dumy).closest('tr').find('#store_id').val();
+      var location_id = $(dumy).closest('tr').find('#location_id').val();
+      var po_location = $(dumy).closest('tr').find('#po_location').val();
+      var url="{% url 'vendorpaymentjs' %}";
+      var headers = {'X-CSRFToken': '{{ csrf_token }}' }
+
+      $.ajax({
+              url:url,
+              type: "post",
+              data: {
+                vendor_id :vendor_id,
+                invoice_no:invoice_no,
+                po_id :po_id,
+                po_date :po_date,
+                grn_id :grn_id,
+                grn_date :grn_date,
+                net_amt :net_amt,
+                payable_amt :payable_amt,
+                paid_amt :paid_amt,
+                location_id:location_id,
+                store_id:store_id,
+                department_id:department_id,
+                po_location:po_location,
+              },
+              headers:headers,
+              dataType : 'json',
+              success: function(data){
+                alert(data);
+                window.location.href = "{% url 'vendor_payment' %}";
+              },
+              error:function(data)
+              {
+                  console.log(data);
+              }
+            });
+    });
+    });
+</script>
+
+
+
+
+<!-- amount paid -->
+<script>
+function paid() {
+  alert("Paid");
+}
+</script>
+{% endblock %}

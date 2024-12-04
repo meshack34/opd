@@ -1,0 +1,162 @@
+{% extends 'user_management/base.html' %}
+{% load static %}
+{% block head_block %}
+
+<style>
+    input[type=text], input[type=date],input[type=option]{
+        height: 20px;
+    }
+    label{
+        font-weight: 500;
+    }
+    .inputfield {
+        height: 50px
+      }
+
+</style>
+
+
+{% endblock  %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="padding: 20px;">
+                        <h3><b>Create User</b></h3>
+                        <div >
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <div>
+                                    <div class="icon-button-demo">&nbsp;
+                                        <a href="/view_create_userprofile" class="gray_bg"><button type="button" class="btn btn-info"><i class="fas fa-edit"  style="color:white;">Edit</i></button></a>&nbsp;
+                                        <button type="submit" class="btn btn-success" aria-label="Close"> <i class="fas fa-save" >Save</i></button></a>&nbsp;
+                                        <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button></a>&nbsp;
+                                        <a href="/dashboard" class="red_bg"><button type="button" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></button></a>
+                                </div>
+                                {% if messages %}
+                                <div class="alert alert-success" role="alert">
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                                {% endif %}
+                                
+                                <div class="form-group">
+                                    <hidden>{{form.user_id}}
+                                        {{userform.username}}
+                                        {{userform.password1}}
+                                        {{userform.password2}}
+                                        
+
+                                    </hidden>
+                                    
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-4">
+                                        <lable>First Name*</lable>
+                                        {{form.f_name}}
+                                        {{userform.first_name}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>Middle Name</lable>
+                                        {{form.middle_name}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>Last Name*</lable>
+                                        {{form.last_name}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Email*</label>
+                                        <input type="email" name="email"  required id="id_email" class='form-control'>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Date of Birth*</label>
+                                        {{form.date_of_birth}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Create Date & time*</label>
+                                        {{form.create_datatime}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Department*</label>
+                                        {{form.department}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>User Profile*</label>
+                                        {{form.user_profile}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>location</label>
+                                        {{form.location}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Store</label>
+                                        {{form.store}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Status*</label>
+                                        {{form.status}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Date of Join</label>
+                                        {{form.date_of_join}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Date of Leaving</label>
+                                        {{form.date_of_living}}
+                                    </div>
+                                </div>
+                              
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<script>
+    window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 2000);
+</script>
+
+<script>
+    $( document ).ready(function() {
+        console.log($('#id_date_of_birth')[0].value);
+        $( "#id_date_of_birth" ).change(function(e) {
+          var value = e.target.value;
+          var vals = value.split('-');
+          var year = vals[0];
+          var month = vals[1];
+          var day = vals[2];
+          var name = $('#id_f_name').val().slice(0, 4).toUpperCase();
+          var lastDigit = String(year).substr(-2);
+          var output = name+day+month+lastDigit
+          console.info(name+day+month+lastDigit);
+          $( "#id_password1" ).val(output);
+          $( "#id_password2" ).val(output);
+          
+        });
+    });
+</script>
+
+<script>
+    $( document ).keyup(function() {
+          var name = $('#id_f_name').val()
+          $( "#id_first_name" ).val(name);
+          
+    });
+</script>
+
+{% endblock %}

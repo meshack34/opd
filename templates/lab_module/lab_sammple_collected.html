@@ -1,0 +1,65 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;">
+            
+            <h2><img src="{% static 'images/lab_test.png' %}" alt="" style="width: 50px;">  <b>Sample Collected</b></h2><br><br>
+            <div>
+              <div style="margin-left: 80%;">
+                <span style="font-size: 15px;"><button class="btn btn-primary" style="font-size: 10px;">*</button>  waiting</span>&nbsp;
+                <span style="font-size: 15px;"><button class="btn btn-success" style="font-size: 10px;">*</button>  completed</span>
+              </div><br>
+                <table class="table ">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Test Id</th>
+                        <th scope="col">Unid</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Date & Time</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in collected_records %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            {% if data.status == "waiting" %}
+                            <td id="pop_up"><a href="/lab_result_entry/{{data.test_id}}"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >*</button></a></td>
+                            {% elif data.status == "completed" %}
+                            <td id="pop_up"><a href="/lab_result_entry/{{data.test_id}}"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" >*</button></a></td>
+                            {% else %}
+                            <td id="pop_up"><a href="/lab_result_entry/{{data.test_id}}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter" >*</button></a></td>
+                            {% endif %}
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.test_id}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.uhid}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.profile_name}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.date_time}}" readonly></td>
+                          </tr>
+                          {% endfor %}
+                  </table>
+                  <p id="demo"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+{% endblock %}
